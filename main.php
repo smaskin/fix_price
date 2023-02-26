@@ -14,17 +14,9 @@ class Application
     private Validator $chain;
 
     /**
-     * Проверка цепочки
-     */
-    public function check(array $request): bool
-    {
-        return $this->chain->validate($request);
-    }
-
-    /**
      * Сборка цепочки
      */
-    public function addValidators(...$validators): void
+    public function __construct(Validator ...$validators)
     {
         $this->chain = array_shift($validators);
         $current = $this->chain;
@@ -32,6 +24,14 @@ class Application
             $current->next = array_shift($validators);
             $current = $current->next;
         }
+    }
+
+    /**
+     * Проверка цепочки
+     */
+    public function check(array $request): bool
+    {
+        return $this->chain->validate($request);
     }
 }
 
@@ -113,13 +113,7 @@ final class ActivityValidator extends Validator
     }
 }
 
-$app = new Application;
-$app->addValidators(
-    new StatusValidator,
-    new RoleValidator,
-    new PermissionValidator,
-    new ActivityValidator,
-);
+$app = new Application(new StatusValidator, new RoleValidator, new PermissionValidator, new ActivityValidator);
 $request = [
     'status' => 'enabled', //disabled
     'role' => 'user', //admin
