@@ -28,7 +28,7 @@ class User
         return in_array($this->role, self::ROLES, true);
     }
 
-    public function hasPermission(): bool
+    public function checkPermission(): bool
     {
         return in_array($this->permission, self::PERMISSIONS, true);
     }

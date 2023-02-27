@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 use App\Application;
 use App\Entities\Request;
 use App\Entities\User;
+use App\Output\ConsoleLogger;
 use App\Services\UserService;
 use App\Validators\ActivityValidator;
 use App\Validators\PermissionValidator;
@@ -20,12 +21,13 @@ use App\Validators\StatusValidator;
     статусы, роли и разрешения на свое усмотрение, лимиты по активности произвольные, прерывать запрос, если не прошла хотя бы одна проверка.
  */
 
-$app = new Application;
-$validator = new StatusValidator;
+$log = new ConsoleLogger;
+$app = new Application($log);
+$validator = new StatusValidator($log);
 $validator
-    ->setNext(new RoleValidator)
-    ->setNext(new PermissionValidator)
-    ->setNext(new ActivityValidator(new UserService));
+    ->setNext(new RoleValidator($log))
+    ->setNext(new PermissionValidator($log))
+    ->setNext(new ActivityValidator($log, new UserService));
 $app->setValidator($validator);
 
 $request = new Request(new User('disabled', 'user', 'limited', 9));

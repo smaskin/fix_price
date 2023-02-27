@@ -3,16 +3,19 @@
 namespace App\Validators;
 
 use App\Entities\Request;
+use App\Output\LoggerInterface;
 
 final class StatusValidator extends Validator
 {
+    public function __construct(public LoggerInterface $logger) {}
+
     public function validate(Request $request): bool
     {
         if ($request->getUser()->isEnabledStatus()) {
-            echo 'Status confirmed' . PHP_EOL;
+            $this->logger->log('Status confirmed');
             return parent::validate($request);
         }
-        echo 'Incorrect status' . PHP_EOL;
+        $this->logger->error('Incorrect status');
         return false;
     }
 }

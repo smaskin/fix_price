@@ -3,11 +3,15 @@
 namespace App;
 
 use App\Entities\Request;
+use App\Output\LoggerInterface;
 use App\Validators\Validator;
 
 class Application
 {
     public Validator $validator;
+
+    public function __construct(private LoggerInterface $logger) {}
+
 
     public function setValidator(Validator $validator): void
     {
@@ -16,9 +20,9 @@ class Application
 
     public function run(Request $request): void
     {
-        echo '--- Start request validation ---' . PHP_EOL;
-        echo $this->validator->validate($request)
-            ? 'SUCCESS validation' . PHP_EOL
-            : 'FAILED validation' . PHP_EOL;
+        $this->logger->log('--- Start request validation ---');
+        $this->validator->validate($request)
+            ? $this->logger->log('SUCCESS request')
+            : $this->logger->error('FAILED request');
     }
 }

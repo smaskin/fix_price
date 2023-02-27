@@ -3,6 +3,7 @@
 namespace App\Validators;
 
 use App\Entities\Request;
+use App\Output\LoggerInterface;
 
 abstract class Validator
 {

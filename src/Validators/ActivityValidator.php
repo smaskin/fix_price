@@ -4,11 +4,12 @@ namespace App\Validators;
 
 
 use App\Entities\Request;
+use App\Output\LoggerInterface;
 use App\Services\UserService;
 
 final class ActivityValidator extends Validator
 {
-    public function __construct(private UserService $users) {}
+    public function __construct(public LoggerInterface $logger, private UserService $users) {}
 
     private const PREMIUM_CUT = 100;
     private const LIMITED_CUT = 10;
@@ -17,14 +18,14 @@ final class ActivityValidator extends Validator
     {
         $user = $request->getUser();
         if ($this->users->isAdmin($user)) {
-            echo 'Unlimited access' . PHP_EOL;
+            $this->logger->log('Unlimited access');
             return parent::validate($request);
         }
         if ($this->users->inLimitedRange($user, self::LIMITED_CUT) || $this->users->inPremiumRange($user, self::PREMIUM_CUT)) {
-            echo 'Activity is normal' . PHP_EOL;
+            $this->logger->log('Activity is normal');
             return parent::validate($request);
         }
-        echo 'Excessive activity' . PHP_EOL;
+        $this->logger->error('Excessive activity');
         return false;
     }
 }
