@@ -15,7 +15,7 @@ final class PermissionValidator extends Validator
             $this->logger->log(sprintf('User has %s permission', $request->getUser()->getPermission()));
             return parent::validate($request);
         }
-        $this->logger->error('Unknown permissions');
+        $this->logger->error('Forbidden permissions');
         return false;
     }
 }

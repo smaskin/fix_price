@@ -9,16 +9,20 @@ class User
     private const PERMISSIONS = ['limited', 'unlimited'];
 
 
-    public function __construct(private string $status, private string $role, private string $permission, private int $activity)
+    public function __construct(
+        private string $status,
+        private string $role,
+        private string $permission,
+        private int    $activity)
     {
     }
 
-    public function isEnabledStatus(): string
+    public function isEnabledStatus(): bool
     {
         return $this->status === self::ENABLED_STATUS;
     }
 
-    public function getRole(): string|bool
+    public function getRole(): string
     {
         return $this->role;
     }

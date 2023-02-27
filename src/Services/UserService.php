@@ -6,9 +6,11 @@ use App\Entities\User;
 
 class UserService
 {
+    private const ADMIN_ROLE = 'admin';
+
     public function isAdmin(User $user): bool
     {
-        return $user->getRole() === 'admin';
+        return $user->getRole() === self::ADMIN_ROLE;
     }
 
     public function inLimitedRange(User $user, int $limit): bool

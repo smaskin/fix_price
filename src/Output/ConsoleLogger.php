@@ -13,7 +13,7 @@ class ConsoleLogger implements LoggerInterface
         $this->out('Error - ' . $message);
     }
 
-    private function out($message): void
+    private function out(string $message): void
     {
         echo $message . PHP_EOL;
     }

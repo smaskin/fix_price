@@ -3,6 +3,6 @@
 namespace App\Output;
 interface LoggerInterface
 {
-    public function log(string $message);
-    public function error(string $string);
+    public function log(string $message): void;
+    public function error(string $message): void;
 }
