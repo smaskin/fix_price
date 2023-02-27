@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 use App\Application;
 use App\Entities\Request;
 use App\Entities\User;
+use App\Services\UserService;
 use App\Validators\ActivityValidator;
 use App\Validators\PermissionValidator;
 use App\Validators\RoleValidator;
@@ -24,7 +25,7 @@ $validator = new StatusValidator;
 $validator
     ->setNext(new RoleValidator)
     ->setNext(new PermissionValidator)
-    ->setNext(new ActivityValidator);
+    ->setNext(new ActivityValidator(new UserService));
 $app->setValidator($validator);
 
 $request = new Request(new User('disabled', 'user', 'limited', 9));

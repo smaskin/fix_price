@@ -38,17 +38,7 @@ class User
         return $this->permission;
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->getRole() === 'admin';
-    }
-
-    public function isClient(): bool
-    {
-        return $this->role === 'user';
-    }
-
-    public function hasUnlimitedAccess(): bool
+    public function hasPremiumAccess(): bool
     {
         return $this->permission === 'unlimited';
     }
